@@ -18,4 +18,8 @@ class Section1Test extends FunSuite {
     assert(Section1.max(0, 3) === 3)
     assert(Section1.max(0, -3) === 0)
   }
+
+  test("A new 'constOne' function using call by name can be called with 'loop'") {
+    //assert(Section1.newConstOne(3, Section1.loop) === 1)
+  }
 }
