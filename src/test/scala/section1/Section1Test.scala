@@ -22,4 +22,8 @@ class Section1Test extends FunSuite {
   test("A new 'constOne' function using call by name can be called with 'loop'") {
     //assert(Section1.newConstOne(3, Section1.loop) === 1)
   }
+
+  test("The expression is a mix from methods, values and lazy values") {
+    assert(Section1.expr() === "xzyz")
+  }
 }
