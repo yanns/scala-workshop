@@ -9,5 +9,5 @@ object Section1 {
   def greeting: String = ???
   def max(x: Int, y: Int): Int = ???
 
-  def newConstOne(x: Int, y: Int) = constOne(x, y)
+  def newConstOne(x: Int, y: => Int) = 1
 }
