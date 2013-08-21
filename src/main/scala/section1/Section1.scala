@@ -9,7 +9,7 @@ object Section1 {
   def greeting: String = ???
   def max(x: Int, y: Int): Int = ???
 
-  def newConstOne(x: Int, y: => Int) = 1
+  def newConstOne(x: Int, y: Int) = 1
 
   def expr(): String = {
     var result = ""
