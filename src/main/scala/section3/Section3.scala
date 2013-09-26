@@ -6,14 +6,19 @@ object Section3 {
     id: Int,
     firstName: String,
     lastName: String,
-    age: Int,
+    age: Option[Int],
     gender: Option[String])
 
   object UserRepository {
+    private val male = Some("male")
+    private val female = Some("female")
+
     private val users = Map(
-      1 -> User(1, "John", "Doe", 32, Some("male")),
-      2 -> User(2, "Johanna", "Doe", 30, None),
-      3 -> User(3, "Alice", "Doe", 30, Some("female"))
+      1 -> User(1, "John", "Doe", Some(32), male),
+      2 -> User(2, "Johanna", "Doe", Some(30), None),
+      3 -> User(3, "Alice", "Doe", None, female),
+      4 -> User(4, "Lisa", "Doe", Some(8), female),
+      5 -> User(5, "Kathrin", "Doe", Some(18), female)
     )
 
     def findById(id: Int): Option[User] = users.get(id)
@@ -22,5 +27,7 @@ object Section3 {
   }
 
   def isMale(id: Int): Boolean = ???
+
+  def isUserAllowed(id: Int): Boolean = ???
 
 }
