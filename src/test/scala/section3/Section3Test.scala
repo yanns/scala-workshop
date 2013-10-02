@@ -17,7 +17,7 @@ class Section3Test extends FunSuite {
   }
 
   test("a not found user is not male") {
-    assert(Section3.isMale(4) === false)
+    assert(Section3.isMale(999) === false)
   }
 
   test("male user is not allowed") {
