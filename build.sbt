@@ -8,6 +8,10 @@ scalaVersion := "2.10.2"
 
 scalacOptions ++= Seq("-Xmax-classfile-name", "128", "-deprecation","-unchecked")
 
+libraryDependencies += "joda-time" % "joda-time" % "2.3"
+
+libraryDependencies += "org.joda" % "joda-convert" % "1.5"
+
 libraryDependencies += "org.scalatest" %% "scalatest" % "1.9.1" % "test"
 
 libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
