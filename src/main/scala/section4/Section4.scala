@@ -7,7 +7,7 @@ object Section4 {
   case class NoIdException(message: String) extends Exception(message)
 
   case class Customer(age: Int, haveId: Boolean = false) {
-    //require (???)
+    // hint: you can use the require function
   }
 
   class Store {
