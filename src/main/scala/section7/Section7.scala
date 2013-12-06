@@ -23,7 +23,7 @@ object Section7 {
     Thread.sleep(Random.nextInt(2000))
     if (water.temperature < 70) throw new Exception("the water is not hot enough")
     println(s"$pasta is ready")
-    s"boiled $pasta"
+    s"$pasta ready"
   }
 
   def prepareSauce(ingredients: String*): Future[Sauce] = Future {
