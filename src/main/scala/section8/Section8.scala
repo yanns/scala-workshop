@@ -31,8 +31,7 @@ object Section8 extends App {
   val hulk = system.actorOf(Props(classOf[Customer], italianRestaurant), "hulk")
   italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, hulk)
 
-  Thread.sleep(4000)
-  Thread.sleep(4000)
+  Thread.sleep(5000)
 
   implicit val timeout = Timeout(10.seconds)
   val isClosed = italianRestaurant ? ItalianRestaurant.ClosingTime
