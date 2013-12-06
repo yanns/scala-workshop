@@ -15,41 +15,45 @@ object Section8 extends App {
   val system = ActorSystem("ItalianRestaurant")
   val italianRestaurant = system.actorOf(Props[ItalianRestaurant], "ItalianRestaurant")
   val alice = system.actorOf(Props(classOf[Customer], italianRestaurant), "alice")
-  italianRestaurant.tell(CustomerWantsTable, alice)
+  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, alice)
 
   Thread.sleep(4000)
 
   val bob = system.actorOf(Props(classOf[Customer], italianRestaurant), "bob")
-  italianRestaurant.tell(CustomerWantsTable, bob)
+  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, bob)
 
   val jack = system.actorOf(Props(classOf[Customer], italianRestaurant), "jack")
-  italianRestaurant.tell(CustomerWantsTable, jack)
+  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, jack)
 
   val cinderella = system.actorOf(Props(classOf[Customer], italianRestaurant), "cinderella")
-  italianRestaurant.tell(CustomerWantsTable, cinderella)
+  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, cinderella)
 
   val hulk = system.actorOf(Props(classOf[Customer], italianRestaurant), "hulk")
-  italianRestaurant.tell(CustomerWantsTable, hulk)
+  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, hulk)
 
   Thread.sleep(4000)
   Thread.sleep(4000)
 
   implicit val timeout = Timeout(10.seconds)
-  val isClosed = italianRestaurant ? ClosingTime
+  val isClosed = italianRestaurant ? ItalianRestaurant.ClosingTime
   Await.ready(isClosed, 10.seconds)
   system.shutdown()
 }
 
-case object CustomerWantsTable
-case object CustomerLeave
 
-sealed trait CustomerCommand
-case object PastaCommand extends CustomerCommand
-case object SpaghettiBolognese extends CustomerCommand
+object ItalianRestaurant {
+  case object CustomerWantsTable
+  case object CustomerLeave
 
-case object ClosingTime
+  sealed trait CustomerCommand
+  case object PastaCommand extends CustomerCommand
+  case object SpaghettiBolognese extends CustomerCommand
+
+  case object ClosingTime
+}
 
 class ItalianRestaurant extends Actor {
+  import ItalianRestaurant._
 
   val totalNumberOfTables = 3
   var tablesFree = totalNumberOfTables
@@ -57,11 +61,11 @@ class ItalianRestaurant extends Actor {
 
   def receive = {
 
-    case CustomerWantsTable if closing => sender ! RestaurantWillClose
+    case CustomerWantsTable if closing => sender ! Customer.RestaurantWillClose
     case CustomerWantsTable if tablesFree > 0 =>
-      sender ! TableFree
-        tablesFree = tablesFree -1
-    case CustomerWantsTable => sender ! HaveToWait
+      sender ! Customer.TableFree
+      tablesFree = tablesFree -1
+    case CustomerWantsTable => sender ! Customer.HaveToWait
 
     case CustomerLeave =>
       println("bye bye " + sender.path.name)
@@ -88,6 +92,7 @@ class ItalianRestaurant extends Actor {
       closing = true
       if (tablesFree == totalNumberOfTables) {
         sender ! "closed"
+        context.stop(self)
       } else {
         val requestor = sender
         context.system.scheduler.scheduleOnce(1.seconds) {
@@ -98,36 +103,39 @@ class ItalianRestaurant extends Actor {
   }
 }
 
-case object TableFree
-case object HaveToWait
-case object RestaurantWillClose
+object Customer {
+  case object TableFree
+  case object HaveToWait
+  case object RestaurantWillClose
+}
 
 class Customer(italianRestaurant: ActorRef) extends Actor {
+  import Customer._
 
-
-  def name = self.path.name
-  def receive: Actor.Receive = {
+  def receive = {
     case HaveToWait =>
-      println(name + ": oh no, I have to wait")
+      debug("oh no, I have to wait")
       context.system.scheduler.scheduleOnce(2.seconds) {
-        italianRestaurant ! CustomerWantsTable
+        italianRestaurant ! ItalianRestaurant.CustomerWantsTable
       }
 
     case RestaurantWillClose =>
-      println(name + ": ok, I'll come back tomorrow")
+      debug("ok, I'll come back tomorrow")
 
     case TableFree =>
-      println(name + ": thanks for the table")
+      debug("thanks for the table")
       if (Random.nextBoolean())
-        italianRestaurant ! PastaCommand
+        italianRestaurant ! ItalianRestaurant.PastaCommand
       else
-        italianRestaurant ! SpaghettiBolognese
+        italianRestaurant ! ItalianRestaurant.SpaghettiBolognese
 
     case "pasta ready" =>
-      println(name + ": thanks for the pasta")
+      debug("thanks for the pasta")
       context.system.scheduler.scheduleOnce(2.seconds) {
-        italianRestaurant ! CustomerLeave
+        italianRestaurant ! ItalianRestaurant.CustomerLeave
       }
 
   }
+
+  private def debug(statement: String) = println(self.path.name + ": " + statement)
 }
