@@ -39,7 +39,7 @@ object Section7 {
     println(s"preparing to mix $boiledPasta with $sauce")
     Thread.sleep(Random.nextInt(1000))
     println(s"mix $boiledPasta with $sauce is ready")
-    "spaghetti bolognese"
+    "spaghetti bolognese ready"
   }
 
   def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = ???
