@@ -97,6 +97,8 @@ class ItalianRestaurant extends Actor {
         context.system.scheduler.scheduleOnce(1.seconds) {
           self.tell(ClosingTime, requestor)
         }
+        // or
+        // context.system.scheduler.scheduleOnce(1.second, self, ClosingTime)(executor = context.dispatcher, sender = sender)
       }
 
   }
@@ -133,6 +135,8 @@ class Customer(italianRestaurant: ActorRef) extends Actor {
       context.system.scheduler.scheduleOnce(2.seconds) {
         italianRestaurant ! ItalianRestaurant.CustomerLeave
       }
+      // or
+      context.system.scheduler.scheduleOnce(2.seconds, italianRestaurant, ItalianRestaurant.CustomerLeave)
 
   }
 
