@@ -20,10 +20,8 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test"
 
 libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
 
-libraryDependencies += "org.specs2" %% "specs2" % "2.1.1" % "test"
+libraryDependencies += "org.specs2" %% "specs2" % "2.3.7" % "test"
  
-scalacOptions in Test ++= Seq("-Yrangepos")
-
 resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases"  at "http://oss.sonatype.org/content/repositories/releases")
 
