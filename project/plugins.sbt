@@ -5,7 +5,7 @@ logLevel := Level.Warn
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.5.2")
 
 // eclipse integration
-addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.3.0")
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.4.0")
 
 // dependency graph
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4")
