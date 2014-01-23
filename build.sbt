@@ -27,3 +27,12 @@ libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.10.1" % "test"
 resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases"  at "http://oss.sonatype.org/content/repositories/releases")
 
+lazy val macros = project
+  .settings(
+    libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.10.2"
+  )
+
+lazy val root =
+  project.in( file(".") )
+    .dependsOn(macros)
+
