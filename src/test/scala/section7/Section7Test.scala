@@ -48,7 +48,7 @@ class Section7Test extends FeatureSpec with GivenWhenThen with Matchers {
       val mix = mixPastaAndSauce(spaghetti, sauce)
 
       Then("the spaghetti bolognese are ready")
-      Await.result(mix, atMost) shouldEqual "spaghetti bolognese"
+      Await.result(mix, atMost) shouldEqual "spaghetti bolognese ready"
     }
 
     scenario("I prepare the sauce and the spaghetti in parallel") {
@@ -59,7 +59,7 @@ class Section7Test extends FeatureSpec with GivenWhenThen with Matchers {
       val mix = prepareSpaghettiBolognese("spaghetti", Water(temperature = 25), ingredients:_*)
 
       Then("the spaghetti bolognese are ready")
-      Await.result(mix, atMost) shouldEqual "spaghetti bolognese"
+      Await.result(mix, atMost) shouldEqual "spaghetti bolognese ready"
     }
   }
 
