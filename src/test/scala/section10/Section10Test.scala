@@ -15,6 +15,8 @@ class Section10Test extends FunSuite with Matchers {
   test("dictionary") {
     Section10.dictionary should contain key 'e'
     Section10.dictionary('e') should contain ("elegant")
+    Section10.dictionary should contain key 'j'
+    Section10.dictionary('j') should contain ("Java")
   }
 
 
