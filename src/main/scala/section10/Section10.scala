@@ -24,7 +24,7 @@ object Section10 {
     """.stripMargin
 
 
-  val words = text.replace(","," ").replace(".", " ").replace("\n", " ").replace("(", "").replace(")","").replaceAll("\\s", " ").split(" ").toVector
+  val words = text.replace(","," ").replace(".", " ").replace("\n", " ").replace("(", "").replace(")","").split(" ").toSeq
 
   def wordsWithoutEmptyString: Seq[String] = ???
 
