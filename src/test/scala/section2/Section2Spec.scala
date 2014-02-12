@@ -40,4 +40,12 @@ class Section2Spec extends FunSuite {
     assert(result === Map("is" -> 5, "more" -> 3, "less" -> 1, "Scala" -> 2, "even" -> 1, "fun" -> 2))
   }
 
+  test("Section2 can remember which character was tried for which word") {
+    assert(Section2.isCharacterAlreadyTried(2, 'c') === false)
+    Section2.addTriedCharacter(2, 'c')
+    assert(Section2.isCharacterAlreadyTried(2, 'c') === true)
+    assert(Section2.isCharacterAlreadyTried(2, 'a') === false)
+    assert(Section2.isCharacterAlreadyTried(1, 'c') === false)
+  }
+
 }

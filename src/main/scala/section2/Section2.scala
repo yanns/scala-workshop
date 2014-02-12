@@ -20,4 +20,8 @@ object Section2 {
 
   def counts(input: Seq[String]): Map[String, Int] = ???
 
+  def addTriedCharacter(wordId: Int, character: Char): Unit = ???
+
+  def isCharacterAlreadyTried(wordId: Int, character: Char): Boolean = ???
+
 }
