@@ -4,7 +4,7 @@ version := "0.1.0-SNAPSHOT"
 
 organization := "com.yanns"
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.3"
 
 scalacOptions ++= Seq("-Xmax-classfile-name", "128", "-deprecation","-unchecked")
 
@@ -29,7 +29,7 @@ resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/s
 
 lazy val macros = project
   .settings(
-    libraryDependencies += "org.scala-lang" % "scala-compiler" % "2.10.2"
+    libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value
   )
 
 lazy val root =
