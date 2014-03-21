@@ -14,7 +14,7 @@ libraryDependencies += "org.joda" % "joda-convert" % "1.6"
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.9.0"
 
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.2.3"
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.0"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.2" % "test"
 
