@@ -7,6 +7,8 @@ scala-workshop
 - for eclipse: 'eclipse with-source=true'
 - for IDEA: 'gen-idea'
 
+In Intellij, if you have an error concerning a shared output path, check if there is no `project` folder in the `macros` project. If there is one, just remove it.
+
 3. wait to have downloaded the whole internet
 
 4. open the project in your IDE
