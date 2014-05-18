@@ -2,7 +2,7 @@ package exp.macros
 
 import language.experimental.macros
 
-import reflect.macros.Context
+import scala.reflect.macros.blackbox.Context
 
 object DebugMacros {
 
