@@ -11,6 +11,6 @@ else
     DEBUG_PARAMETERS="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=${JAVA_DEBUG_PORT}"
 fi
 
-SBT_LAUNCH_JAR=`dirname $0`/sbtwrapper/sbt-launch-0.13.2.jar
+SBT_LAUNCH_JAR=`dirname $0`/sbtwrapper/sbt-launch-0.13.5.jar
 
 java ${DEBUG_PARAMETERS} -Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=384M -jar $SBT_LAUNCH_JAR "$@"
