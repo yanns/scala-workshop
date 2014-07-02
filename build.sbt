@@ -8,22 +8,20 @@ scalaVersion := "2.11.1"
 
 scalacOptions ++= Seq("-Xmax-classfile-name", "128", "-deprecation","-unchecked")
 
-libraryDependencies += "joda-time" % "joda-time" % "2.3"
+libraryDependencies ++= Seq(
+  "joda-time" % "joda-time" % "2.3",
+  "org.joda" % "joda-convert" % "1.6",
+  "org.scala-lang.modules" %% "scala-async" % "0.9.1",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.4"
+)
 
-libraryDependencies += "org.joda" % "joda-convert" % "1.6"
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "2.2.0",
+  "org.mockito" % "mockito-core" % "1.9.5",
+  "org.specs2" %% "specs2" % "2.3.12",
+  "org.scalacheck" %% "scalacheck" % "1.11.4"
+).map(_ % "test")
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-async" % "0.9.1"
-
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.3.2"
-
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.1.3" % "test"
-
-libraryDependencies += "org.mockito" % "mockito-core" % "1.9.5" % "test"
-
-libraryDependencies += "org.specs2" %% "specs2" % "2.3.11" % "test"
-
-libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.11.3" % "test"
- 
 resolvers ++= Seq("snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
                   "releases"  at "http://oss.sonatype.org/content/repositories/releases")
 
