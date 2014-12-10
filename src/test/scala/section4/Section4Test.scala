@@ -19,12 +19,12 @@ class Section4Test extends FunSuite with Matchers {
   }
 
   test("a customer with 18 is allowed to buy cigarettes if he can show an ID") {
-    new Store().buyCigarettes(Customer(18, true)) shouldBe a [Cigarettes]
+    new Store().buyCigarettes(Customer(18, haveId = true)) shouldBe a [Cigarettes]
   }
 
   test("a customer with 18 is not allowed to buy cigarettes if he cannot show an ID") {
     intercept[NoIdException] {
-      new Store().buyCigarettes(Customer(18, false))
+      new Store().buyCigarettes(Customer(18, haveId = false))
     }
   }
 
@@ -41,7 +41,7 @@ class Section4Test extends FunSuite with Matchers {
   }
 
   test("a customer over 18 is allowed to buy cigarettes, even without ID in a laxist store") {
-    new LaxistStore().buyCigarettes(Customer(18, false)) shouldBe a [Cigarettes]
+    new LaxistStore().buyCigarettes(Customer(18, haveId = false)) shouldBe a [Cigarettes]
   }
 
 
