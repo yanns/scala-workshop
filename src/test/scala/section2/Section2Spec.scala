@@ -28,6 +28,11 @@ class Section2Spec extends FunSuite {
     assert(result === Seq("Scala", "is", "fun", "fun", "is", "good"))
   }
 
+  test("Section2 extract words from empty list") {
+    val result = Section2.extractWords(Nil)
+    assert(result === Nil)
+  }
+
   // Map
 
   test("Section2 can speak very loud with Map") {
