@@ -1,20 +1,29 @@
 scala-workshop
 ==============
 
-1. start the sbt console with ./sbt
+## How to start sbt?
 
-2. In the sbt console, generate the configuration for your IDE:
-- for eclipse: 'eclipse with-source=true'
-- for IDEA: 'gen-idea'
+1. start the sbt console with `./activator` or `activator.bat`
 
-In Intellij, if you have an error concerning a shared output path, check if there is no `project` folder in the `macros` project. If there is one, just remove it.
+2. In the sbt console, compile the project with 'compile' 
 
-3. wait to have downloaded the whole internet
-
-4. open the project in your IDE
-
-5. In the sbt console, compile the project with 'compile' 
-
-6. In the sbt console, let the tests run with 'test'
+3. In the sbt console, let the tests run with 'test'
 No surprise, the tests are not successful.
+
+
+## Integration in IDE
+
+### Intellij
+
+In [Intellij](https://www.jetbrains.com/idea/), create a new project from existing sources by selecting the file `build.sbt`.
+
+### Scala IDE (based on Eclipse)
+
+In [Scala IDE](http://scala-ide.org/):
+
+1. Start the sbt console
+
+2. Enter `eclipse with-source=true`
+
+3. Open the generated project with Scala IDE.
 
