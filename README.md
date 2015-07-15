@@ -38,3 +38,9 @@ In [Scala IDE](http://scala-ide.org/):
 
 [Look at the documentation for more info](http://scala-ide.org/docs/user/gettingstarted.html).
 
+### no IDE?
+
+run `./activator ui` or `activator.bat ui`.
+
+A web interface will be opened to interact with the project.
+

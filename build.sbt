@@ -17,16 +17,16 @@ javacOptions ++= Seq(
   "-Xlint:unchecked")
 
 libraryDependencies ++= Seq(
-  "joda-time" % "joda-time" % "2.8.1",
-  "org.joda" % "joda-convert" % "1.7",
-  "org.scala-lang.modules" %% "scala-async" % "0.9.4",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.12")
+  "joda-time"              %  "joda-time"    % "2.8.1"  ,
+  "org.joda"               %  "joda-convert" % "1.7"    ,
+  "org.scala-lang.modules" %% "scala-async"  % "0.9.4"  ,
+  "com.typesafe.akka"      %% "akka-actor"   % "2.3.12")
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "2.2.5",
-  "org.mockito" % "mockito-core" % "1.10.19",
-  "org.scalacheck" %% "scalacheck" % "1.12.4"
-).map(_ % "test")
+  "org.scalatest"  %% "scalatest"    % "2.2.5"   ,
+  "org.mockito"    %  "mockito-core" % "1.10.19" ,
+  "org.scalacheck" %% "scalacheck"   % "1.12.4"
+).map (_ % "test")
 
 lazy val macros = project
 
@@ -34,3 +34,4 @@ lazy val root =
   project.in( file(".") )
     .dependsOn(macros)
 
+fork in run := true
