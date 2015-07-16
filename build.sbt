@@ -28,10 +28,10 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck"   % "1.12.4"
 ).map (_ % "test")
 
-lazy val macros = project
-
-lazy val root =
-  project.in( file(".") )
-    .dependsOn(macros)
+//lazy val macros = project
+//
+//lazy val root =
+//  project.in( file(".") )
+//    .dependsOn(macros)
 
 fork in run := true
