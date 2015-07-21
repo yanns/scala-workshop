@@ -24,7 +24,13 @@ More commands:
 
 ### Intellij
 
-In [Intellij](https://www.jetbrains.com/idea/), create a new project from existing sources by selecting the file `build.sbt`.
+In [Intellij](https://www.jetbrains.com/idea/):
+
+1. install the [Scala plugin](https://confluence.jetbrains.com/display/SCA/Getting+Started+with+IntelliJ+IDEA+Scala+Plugin)
+   (no need to install a Scala SDK before)
+
+2. create a new project from existing sources by selecting the file `build.sbt`.
+
 
 ### Scala IDE (based on Eclipse)
 
