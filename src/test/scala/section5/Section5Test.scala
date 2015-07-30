@@ -47,7 +47,7 @@ class Section5Test extends FunSuite with Matchers {
   }
 
   test("getURLContentWithErrorMessage should fetch website content") {
-    val result = Section5.getURLContent("http://en.wikipedia.org/wiki/Scala_(programming_language)")
+    val result = Section5.getURLContentWithErrorMessage("http://en.wikipedia.org/wiki/Scala_(programming_language)")
     result shouldBe a [Success[_]]
     result.get.next() shouldEqual "<!DOCTYPE html>"
   }
