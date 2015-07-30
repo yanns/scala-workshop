@@ -1,0 +1,133 @@
+scala> 1 + 2
+res0: Int = 3
+
+scala> res0
+res1: Int = 3
+
+scala> res0 + 5
+res2: Int = 8
+
+scala> println("hello world")
+hello world
+
+scala> val msg = "hello world"
+msg: String = hello world
+
+scala> val msg2: java.lang.String = "hello world again"
+msg2: String = hello world again
+
+scala> val msg3: String = "hi"
+msg3: String = hi
+
+scala> println(msg)
+hello world
+
+scala> println(msg2)
+hello world again
+
+scala> println(msg3)
+hi
+
+scala> msg = "good bye"
+<console>:11: error: reassignment to val
+       msg = "good bye"
+           ^
+
+scala> var greeting = "hi"
+greeting: String = hi
+
+scala> greeting = "good bye"
+greeting: String = good bye
+
+scala> def max(x: Int, y: Int): Int = if (x <y) y else x
+<console>:1: error: ')' expected but $XMLSTART$< found.
+def max(x: Int, y: Int): Int = if (x <y) y else x
+                                     ^
+
+scala> def max(x: Int, y: Int): Int = if (x < y) y else x
+max: (x: Int, y: Int)Int
+
+scala> max(3,4)
+res7: Int = 4
+
+scala> max(5,4)
+res8: Int = 5
+
+scala> def max2(x: Int, y: Int) = if (x < y) y else x
+max2: (x: Int, y: Int)Int
+
+scala> max(5, 10 - 6)
+res9: Int = 5
+
+scala> var logEnable =false
+logEnable: Boolean = false
+
+scala> def log(msg: String) = if (logEnable) println(msg)
+log: (msg: String)Unit
+
+scala> log("hi")
+
+scala> log("hi" + 2 / 0)
+java.lang.ArithmeticException: / by zero
+  ... 43 elided
+
+scala> def log2(msg: => String) = if (logEnable) println(msg)
+log2: (msg: => String)Unit
+
+scala> log2("hi")
+
+scala> log2("hi" + 2 / 0)
+
+scala> def greet() = println("Hello world")
+greet: ()Unit
+
+scala> greet()
+Hello world
+
+scala> greet
+Hello world
+
+scala> def hello = "hello"
+hello: String
+
+scala> hello
+res16: String = hello
+
+scala> greet()
+Hello world
+
+scala>
+
+scala> def greet1 = { println("hello method"); 1 }
+greet1: Int
+
+scala> greet1
+hello method
+res18: Int = 1
+
+scala> greet1
+hello method
+res19: Int = 1
+
+scala> val greet2 = { println("hello value"); 2 }
+hello value
+greet2: Int = 2
+
+scala> greet2
+res20: Int = 2
+
+scala> greet2
+res21: Int = 2
+
+scala> lazy val greet3 = { println("hello lazy value"); 3 }
+greet3: Int = <lazy>
+
+scala> greet3
+hello lazy value
+res22: Int = 3
+
+scala> greet3
+res23: Int = 3
+
+scala> greet3
+res24: Int = 3
