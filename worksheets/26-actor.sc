@@ -1,6 +1,5 @@
 // does not work in worksheet, see section7.Actor
 
-import akka.actor.Actor.Receive
 import akka.actor.{Props, Actor, ActorSystem}
 import akka.pattern.ask
 import akka.util.Timeout

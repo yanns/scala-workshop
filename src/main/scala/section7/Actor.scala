@@ -1,6 +1,5 @@
 package section7
 
-import akka.actor.Actor.Receive
 import akka.actor.{Props, Actor, ActorSystem}
 import akka.pattern.ask
 import akka.util.Timeout
@@ -14,7 +13,7 @@ object Actor extends App {
 
   class EchoServer extends Actor {
     var nbrOfMessage = 0
-    override def receive: Receive = {
+    def receive = {
       case "how much?" => sender() ! nbrOfMessage
       case msg: String =>
         nbrOfMessage += 1
