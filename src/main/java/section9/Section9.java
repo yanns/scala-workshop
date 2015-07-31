@@ -1,6 +1,7 @@
 package section9;
 
 import section4.Section4.Customer;
+import section8.Customer$;
 
 public class Section9 {
 
@@ -12,7 +13,7 @@ public class Section9 {
         System.out.println("customer have id: " + customer.haveId());
 
         // TODO: use java getters
-        //System.out.println("customer age: " + customer.getAge());
-        //System.out.println("customer have id: " + customer.isHaveId());
+        System.out.println("customer age: " + customer.getAge());
+        System.out.println("customer have id: " + customer.isHaveId());
     }
 }

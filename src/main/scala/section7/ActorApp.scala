@@ -7,7 +7,7 @@ import scala.concurrent.duration._
 
 import scala.concurrent.{Await, Future}
 
-object Actor extends App {
+object ActorApp extends App {
 
   val system = ActorSystem()
 
@@ -28,10 +28,10 @@ object Actor extends App {
   echoServer ! "wie geht's"
   echoServer ! "wie geht's"
 
-  implicit val timeout: Timeout = 1 second
+  implicit val timeout: Timeout = 1.second
   val result = (echoServer ? "how much?").asInstanceOf[Future[Int]]
 
-  println(Await.result(result, 2 seconds))
+  println(Await.result(result, 2.seconds))
 
   system.shutdown()
 }

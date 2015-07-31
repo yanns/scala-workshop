@@ -6,9 +6,11 @@ object Section1 {
   // implement the ???
   // and change if necessary the 'def' with 'val', 'var' or 'lazy val'
   // <start changes>
-  def message: String = ???
-  def greeting: String = ???
-  def max(x: Int, y: Int): Int = ???
+  val message: String = "Hello, World"
+  var greeting: String = "Hello, World"
+  def max(x: Int, y: Int): Int =
+    if (x < y) y else x
+
   // <stop changes>
 
   // check the difference between call-by-name and call-by-value (default)
@@ -16,7 +18,7 @@ object Section1 {
   def constOne(x: Int, y: Int) = 1
 
   // <start changes>
-  def newConstOne(x: Int, y: Int) = 1
+  def newConstOne(x: Int, y: => Int) = 1
   // <stop changes>
 
 
@@ -27,12 +29,12 @@ object Section1 {
 
     // change if necessary the 'def' with 'val', 'var' or 'lazy val'
     // <start changes>
-    def x = {
+    val x = {
       trackEvaluations += "x"
       1
     }
 
-    def y = {
+    lazy val y = {
       trackEvaluations += "y"
       2
     }

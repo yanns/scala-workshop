@@ -1,4 +1,4 @@
-// does not work in worksheet, see section7.Actor
+// does not work in worksheet, see section7.ActorApp
 
 import akka.actor.{Props, Actor, ActorSystem}
 import akka.pattern.ask

@@ -1,6 +1,7 @@
 package section8
 
 import akka.actor._
+import scala.collection.mutable
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.ExecutionContext.Implicits.global
 import section7.Section7
@@ -15,21 +16,16 @@ object Section8 extends App {
   val system = ActorSystem("ItalianRestaurant")
   val italianRestaurant = system.actorOf(Props[ItalianRestaurant], "ItalianRestaurant")
   val alice = system.actorOf(Props(classOf[Customer], italianRestaurant), "alice")
-  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, alice)
 
   Thread.sleep(4000)
 
   val bob = system.actorOf(Props(classOf[Customer], italianRestaurant), "bob")
-  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, bob)
 
   val jack = system.actorOf(Props(classOf[Customer], italianRestaurant), "jack")
-  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, jack)
 
   val cinderella = system.actorOf(Props(classOf[Customer], italianRestaurant), "cinderella")
-  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, cinderella)
 
   val hulk = system.actorOf(Props(classOf[Customer], italianRestaurant), "hulk")
-  italianRestaurant.tell(ItalianRestaurant.CustomerWantsTable, hulk)
 
   Thread.sleep(5000)
 
@@ -57,6 +53,7 @@ class ItalianRestaurant extends Actor {
   val totalNumberOfTables = 3
   var tablesFree = totalNumberOfTables
   var closing = false
+  var customers = new mutable.HashSet[ActorRef]()
 
   def receive = {
 
@@ -64,11 +61,16 @@ class ItalianRestaurant extends Actor {
     case CustomerWantsTable if tablesFree > 0 =>
       sender ! Customer.TableFree
       tablesFree = tablesFree -1
+      customers += sender
     case CustomerWantsTable => sender ! Customer.HaveToWait
 
     case CustomerLeave =>
-      println("bye bye " + sender.path.name)
-      tablesFree = tablesFree + 1
+      if (customers.remove(sender)) {
+        println("bye bye " + sender.path.name)
+        tablesFree = tablesFree + 1
+      } else {
+        println(s"unknown customer ${sender.path.name}")
+      }
 
     case PastaCommand =>
       println("I have to prepare some pasta for " + sender.path.name)
@@ -98,7 +100,7 @@ class ItalianRestaurant extends Actor {
           self.tell(ClosingTime, requestor)
         }
         // or
-        // context.system.scheduler.scheduleOnce(1.second, self, ClosingTime)(executor = context.dispatcher, sender = sender)
+//        context.system.scheduler.scheduleOnce(1.second, self, ClosingTime)(executor = context.dispatcher, sender = sender)
       }
 
   }
@@ -112,6 +114,8 @@ object Customer {
 
 class Customer(italianRestaurant: ActorRef) extends Actor {
   import Customer._
+
+  italianRestaurant ! ItalianRestaurant.CustomerWantsTable
 
   def receive = {
     case HaveToWait =>

@@ -24,7 +24,7 @@ object Main extends App {
 
   // composition
   val result = boiledWater.flatMap (bw => cookPasta("spaghetti1", bw))
-  result
+  result foreach (println)
 
   val pasta4 = for {
     boiledWater2 <- boilWater(Water(temperature = 25))
@@ -40,6 +40,6 @@ object Main extends App {
 
   val atMost: Duration = 30.seconds
   val p = Await.result(pasta5, atMost)
-  p
+  println(p)
 
 }

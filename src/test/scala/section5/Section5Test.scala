@@ -1,11 +1,34 @@
 package section5
 
+import org.scalacheck.Gen
+import org.scalatest.prop.PropertyChecks
 import org.scalatest.{Matchers, FunSuite}
 import scala.util.{Failure, Success}
 import java.net.URL
 import java.io.ByteArrayOutputStream
 
-class Section5Test extends FunSuite with Matchers {
+class Section5Test extends FunSuite with Matchers with PropertyChecks {
+
+  test("Math.abs must be >= 0") {
+    forAll { (i: Int) =>
+      whenever(i != Int.MinValue) {
+        Math.abs(i) should be >= 0
+      }
+    }
+  }
+
+  val httpProtocolGen = Gen.oneOf("http", "https", "ftp")
+  val validUrl = for {
+    protocol <- httpProtocolGen
+    domain <- Gen.alphaStr
+  } yield protocol + "://" + domain
+
+  test("parseURL can parse a regular URL bis") {
+    forAll(validUrl) { url =>
+      println(url)
+      Section5.parseURL(url) shouldBe a [Success[_]]
+    }
+  }
 
   test("parseURL can parse a regular URL") {
     Section5.parseURL("http://en.wikipedia.org/") shouldBe a [Success[_]]

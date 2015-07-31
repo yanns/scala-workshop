@@ -1,6 +1,6 @@
 package section7
 
-import scala.concurrent.Future
+import scala.concurrent.{Promise, Future}
 import scala.util.Random
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -26,7 +26,23 @@ object Section7 {
     s"$pasta ready"
   }
 
-  def prepareSauce(ingredients: String*): Future[Sauce] = Future {
+
+  def prepareSauce(ingredients: String*): Future[Sauce] = {
+    val result = Promise[Sauce]()
+    new Thread(new Runnable {
+      override def run(): Unit = {
+        println("preparing sauce with ingredients: " + ingredients.mkString(", "))
+        Thread.sleep(Random.nextInt(2000))
+        if (!ingredients.contains("tomatoes") || !ingredients.contains("beef"))
+          result.failure(new Exception("cannot prepare sauce without tomatoes and beef"))
+        println("sauce is ready")
+        result.success("bolognese sauce")
+      }
+    }).start()
+    result.future
+  }
+
+  def prepareSauce1(ingredients: String*): Future[Sauce] = Future {
     println("preparing sauce with ingredients: " + ingredients.mkString(", "))
     Thread.sleep(Random.nextInt(2000))
     if (!ingredients.contains("tomatoes") || !ingredients.contains("beef"))
@@ -42,5 +58,26 @@ object Section7 {
     "spaghetti bolognese ready"
   }
 
-  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = ???
+  def prepareSpaghettiBolognese1(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    import scala.async.Async._
+    val food = async {
+      val boiledWater = await(boilWater(water))
+      val preparedSauce = await(prepareSauce(ingredients: _*))
+      val boiledPasta = await(cookPasta(pasta, boiledWater))
+      val mix = await(mixPastaAndSauce(boiledPasta, preparedSauce))
+      mix
+    }
+    food
+  }
+
+  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val boiledWater = boilWater(water)
+    val sauce = prepareSauce(ingredients: _*)
+    for {
+      water <- boiledWater
+      cookedPasta <- cookPasta(pasta, water)
+      preparedSauce <- sauce
+      spaghetti <- mixPastaAndSauce(cookedPasta, preparedSauce)
+    } yield spaghetti
+  }
 }

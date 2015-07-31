@@ -24,10 +24,11 @@ object Section10 {
     """.stripMargin
 
 
-  val words: Seq[String] = text.replace(","," ").replace(".", " ").replace("\n", " ").replace("\r", " ").replace("(", "").replace(")","").split(" ").toSeq
+  lazy val words: Seq[String] = text.replace(","," ").replace(".", " ").replace("\n", " ").replace("\r", " ").replace("(", "").replace(")","").split(" ").toSeq
 
-  def wordsWithoutEmptyString: Seq[String] = ???
+  lazy val wordsWithoutEmptyString: Seq[String] = words.filter(_.nonEmpty)
 
-  def dictionary: Map[Char, Seq[String]] = ???
+  def dictionary: Map[Char, Seq[String]] =
+    wordsWithoutEmptyString.groupBy(_.head.toLower)
 
 }

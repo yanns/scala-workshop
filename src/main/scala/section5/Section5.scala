@@ -15,20 +15,42 @@ object Section5 {
    *         Success[URL] when the url is valid
    *         Failure[Throwable] when the url is not valid
    */
-  def parseURL(url: String): Try[URL] = ???
+  def parseURL1(url: String): Try[URL] =
+    try {
+      val _url = new URL(url)
+      Success(_url)
+    } catch {
+      case e: Exception => Failure(e)
+    }
 
+  def parseURL(url: String): Try[URL] =
+    Try(new URL(url))
 
   /**
    * uses the URL parsed from the user input
    * If the user input is not a valid URL, use 'http://duckduckgo.com' instead
    */
-  def defaultSearchEngine(userInput: String): URL = ???
+  def defaultSearchEngine1(userInput: String): URL =
+    parseURL(userInput) match {
+      case Success(value) => value
+      case Failure(_) => new URL("http://duckduckgo.com")
+    }
+
+  def defaultSearchEngine(userInput: String): URL =
+    parseURL(userInput).getOrElse(new URL("http://duckduckgo.com"))
 
 
   /**
    * @return the protocol ('http', 'ftp'...) of the URL if valid
    */
-  def getProtocol(url: String): Try[String] = ???
+  def getProtocol1(url: String): Try[String] =
+    parseURL(url).map(url => url.getProtocol)
+
+  def getProtocol(url: String): Try[String] =
+    parseURL(url) match {
+      case Success(v) => Success(v.getProtocol)
+      case Failure(e) => Failure(e)
+    }
 
 
   /**
@@ -39,7 +61,12 @@ object Section5 {
    * @param url url to read the content from
    * @param output to write the read lines from website
    */
-  def readURLContent(url: String, output: ByteArrayOutputStream) = ???
+  def readURLContent(url: String, output: ByteArrayOutputStream) = {
+    getURLContent(url) match {
+      case Failure(ex) => output.write(s"Problem rendering URL content: ${ex.getMessage}".getBytes)
+      case Success(v) => v.foreach(line => output.write(line.getBytes))
+    }
+  }
 
 
   /**
@@ -48,7 +75,18 @@ object Section5 {
    * In case of FileNotFoundException, delivers one line "Requested page does not exist"
    * In case of MalformedURLException, delivers one line "Please make sure to enter a valid URL"
    */
-  def getURLContentWithErrorMessage(url: String): Try[Iterator[String]] = ???
+  def getURLContentWithErrorMessage1(url: String): Try[Iterator[String]] =
+    getURLContent(url).recover {
+      case _: FileNotFoundException => Iterator("Requested page does not exist")
+      case _: MalformedURLException => Iterator("Please make sure to enter a valid URL")
+    }
+
+  def getURLContentWithErrorMessage(url: String): Try[Iterator[String]] =
+    getURLContent(url) match {
+      case Success(v) => Success(v)
+      case Failure(e: FileNotFoundException) => Success(Iterator("Requested page does not exist"))
+      case Failure(e: MalformedURLException) => Success(Iterator("Please make sure to enter a valid URL"))
+    }
 
   /**
    * @param url webpage to read
