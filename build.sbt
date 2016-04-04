@@ -4,7 +4,7 @@ version := "0.1.0-SNAPSHOT"
 
 organization := "com.yanns"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq(
   "-Xmax-classfile-name", "128",
@@ -17,15 +17,15 @@ javacOptions ++= Seq(
   "-Xlint:unchecked")
 
 libraryDependencies ++= Seq(
-  "joda-time"              %  "joda-time"    % "2.8.1"  ,
-  "org.joda"               %  "joda-convert" % "1.7"    ,
-  "org.scala-lang.modules" %% "scala-async"  % "0.9.4"  ,
-  "com.typesafe.akka"      %% "akka-actor"   % "2.3.12")
+  "joda-time"              %  "joda-time"    % "2.9.3"  ,
+  "org.joda"               %  "joda-convert" % "1.8.1"  ,
+  "org.scala-lang.modules" %% "scala-async"  % "0.9.5"  ,
+  "com.typesafe.akka"      %% "akka-actor"   % "2.4.3")
 
 libraryDependencies ++= Seq(
-  "org.scalatest"  %% "scalatest"    % "2.2.5"   ,
+  "org.scalatest"  %% "scalatest"    % "2.2.6"   ,
   "org.mockito"    %  "mockito-core" % "1.10.19" ,
-  "org.scalacheck" %% "scalacheck"   % "1.12.4"
+  "org.scalacheck" %% "scalacheck"   % "1.12.5"
 ).map (_ % "test")
 
 //lazy val macros = project
