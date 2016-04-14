@@ -11,7 +11,7 @@ class Section1Test extends FunSuite {
   test("Section1 wants to be alone") {
     assert(Section1.greeting === "Hello, World")
     // uncomment the following line
-    //Section1.greeting = "Leave me alone, world!"
+    Section1.greeting = "Leave me alone, world!"
     assert(Section1.greeting === "Leave me alone, world!")
   }
 
@@ -21,7 +21,7 @@ class Section1Test extends FunSuite {
   }
 
   test("A new 'constOne' function using call by name can be called with 'loop'") {
-    //assert(Section1.newConstOne(3, Section1.loop) === 1)
+    assert(Section1.newConstOne(3, Section1.loop) === 1)
   }
 
   test("The expression is a mix from methods, values and lazy values") {
