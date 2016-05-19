@@ -42,13 +42,34 @@ object Section2 {
   def extractWords3(input: Seq[String]): Seq[String] =
     input.flatMap(s => s.split(" "))
 
-  def extractWords(input: Seq[String]): Seq[String] = {
+  def extractWords4(input: Seq[String]): Seq[String] = {
     import scala.collection.mutable
 
     val result = mutable.ListBuffer[String]()
     input.foreach(s => s.split(" ").foreach(w => result.append(w)))
     result.toSeq
   }
+
+  def extractWords5(input: Seq[String]): Seq[String] = {
+    val words = for (line <- input) yield line.split(" ")
+    words.flatten
+  }
+
+  def extractWords6(input: Seq[String]): Seq[String] =
+    for {
+      line <- input
+      word <- line.split(" ")
+    } yield word
+
+  def extractWords7(input: Seq[String]): Seq[String] =
+    for (line <- input; word <- line.split(" ")) yield word
+
+  def extractWords(input: Seq[String]): Seq[String] =
+    input.flatMap { line =>
+      line.split(" ").map { word =>
+        word
+      }
+    }
 
   // Map
 
