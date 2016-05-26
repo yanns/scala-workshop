@@ -1,5 +1,6 @@
 package section2
 
+import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
 
 object Section2 {
@@ -64,12 +65,19 @@ object Section2 {
   def extractWords7(input: Seq[String]): Seq[String] =
     for (line <- input; word <- line.split(" ")) yield word
 
-  def extractWords(input: Seq[String]): Seq[String] =
+  def extractWords8(input: Seq[String]): Seq[String] =
     input.flatMap { line =>
       line.split(" ").map { word =>
         word
       }
     }
+
+  def extractWords(input: Seq[String]): Seq[String] =
+    input match {
+      case Nil => Nil
+      case head +: tail => head.split(" ") ++ extractWords(tail)
+    }
+
 
   // Map
 

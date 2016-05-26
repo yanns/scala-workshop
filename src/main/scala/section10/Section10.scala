@@ -26,8 +26,11 @@ object Section10 {
 
   val words: Seq[String] = text.replace(","," ").replace(".", " ").replace("\n", " ").replace("\r", " ").replace("(", "").replace(")","").split(" ").toSeq
 
-  def wordsWithoutEmptyString: Seq[String] = ???
+  def wordsWithoutEmptyString1: Seq[String] = words.filter(_.length != 0)
+  def wordsWithoutEmptyString2: Seq[String] = words.filterNot(_.isEmpty)
+  def wordsWithoutEmptyString: Seq[String] = words.filter(_.nonEmpty)
 
-  def dictionary: Map[Char, Seq[String]] = ???
+  def dictionary1: Map[Char, Seq[String]] = wordsWithoutEmptyString.groupBy(w ⇒ w.charAt(0).toLower)
+  def dictionary: Map[Char, Seq[String]] = wordsWithoutEmptyString.groupBy(w ⇒ w.head.toLower)
 
 }
