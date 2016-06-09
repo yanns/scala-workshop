@@ -1,12 +1,13 @@
 import scala.annotation.tailrec
 
+@tailrec
 def factorial1(n: BigInt): BigInt =
   if (n == 0) 1 else n * factorial1(n - 1)
 
 
 factorial1(3)
 factorial1(10)
-//factorial(10000)
+//factorial1(10000)
 
 
 

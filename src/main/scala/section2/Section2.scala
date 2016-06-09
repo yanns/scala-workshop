@@ -20,7 +20,7 @@ object Section2 {
   private def myToUpperCase(s: String): String = s.toUpperCase
 
   def loud(input: Array[String]): Array[String] =
-    input.map(s => myToUpperCase(s))
+    input.map(myToUpperCase)
   // same:
 //    input.map(_.toUpperCase)
 
@@ -31,7 +31,7 @@ object Section2 {
   // Seq and List
 
   def loud(input: Seq[String]): Seq[String] =
-    input.map(s => myToUpperCase(s))
+    input.map(myToUpperCase)
 
   def extractWords1(input: Seq[String]): Seq[String] =
     input.mkString(" ").split(" ")
@@ -72,11 +72,23 @@ object Section2 {
       }
     }
 
-  def extractWords(input: Seq[String]): Seq[String] =
+  def extractWords9(input: Seq[String]): Seq[String] =
     input match {
       case Nil => Nil
       case head +: tail => head.split(" ") ++ extractWords(tail)
     }
+
+  def extractWords(input: Seq[String]): Seq[String] = {
+    @tailrec
+    def loop(acc: Seq[String], remaining: Seq[String]): Seq[String] = {
+      remaining match {
+        case Nil ⇒ acc
+        case head +: tail ⇒ loop(acc ++ head.split(" "), tail)
+      }
+    }
+
+    loop(Nil, input)
+  }
 
 
   // Map
