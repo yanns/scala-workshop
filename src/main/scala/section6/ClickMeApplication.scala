@@ -8,6 +8,14 @@ object ClickMeApplication extends App {
   // TODO: implement an implicit conversion so that
   // the commented code can compile and work as expected
 
+  import scala.language.implicitConversions
+  implicit def toActionListener(f: (ActionEvent) => Unit): ActionListener =
+    new ActionListener {
+      override def actionPerformed(e: ActionEvent): Unit = {
+        f.apply(e)
+      }
+    }
+
   new JFrame("click Me!") {
     val exitListener = new WindowAdapter {
       override def windowClosing(event: WindowEvent){
@@ -22,10 +30,10 @@ object ClickMeApplication extends App {
         println("button clicked in a java way")
       }
     })
-    // to un-comment
-//    button.addActionListener { event: ActionEvent =>
-//      println("button clicked in a scala way")
-//    }
+    // to un-comment CTRL + Q
+    button.addActionListener { event: ActionEvent =>
+      println("button clicked in a scala way")
+    }
 
     val panel = new JPanel()
     panel.add(button)

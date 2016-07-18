@@ -18,7 +18,7 @@ val squareFunction2 = (a: Int) => a * a
 squareFunction2(5)
 
 
-def useFunctionAndAdd1(f: Int ⇒ Int, arg: Int): Int =
+def useFunctionAndAdd1(f: Int => Int, arg: Int): Int =
   f(arg) + 1
 
 
