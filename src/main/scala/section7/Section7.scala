@@ -42,5 +42,42 @@ object Section7 {
     "spaghetti bolognese ready"
   }
 
-  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = ???
+  def prepareSpaghettiBolognese1(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = for {
+    boiledWater <- boilWater(water)
+    boiledPasta <- cookPasta(pasta, boiledWater)
+    sauce <- prepareSauce(ingredients:_*)
+    spaghettiBolognese <- mixPastaAndSauce(boiledPasta, sauce)
+  } yield spaghettiBolognese
+
+
+  def prepareSpaghettiBolognese2(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] =
+    for {
+      sc <- prepareSauce(ingredients:_*)
+      wtr <- boilWater(water)
+      psta <- cookPasta(pasta, wtr)
+      bolognese <- mixPastaAndSauce(psta, sc)
+    } yield bolognese
+
+  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val futureSauce = prepareSauce(ingredients: _*)
+    val futureBoiledWater = boilWater(water)
+    for {
+      sc <- futureSauce
+      wtr <- futureBoiledWater
+      psta <- cookPasta(pasta, wtr)
+      bolognese <- mixPastaAndSauce(psta, sc)
+    } yield bolognese
+  }
+
+  import scala.async.Async.{async, await}
+  def prepareSpaghettiBolognese3(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val spaghetti = async {
+      val boiledWater = await(boilWater(water))
+      val sauce = await(prepareSauce(ingredients:_*))
+      val cookedPasta = await(cookPasta(pasta, boiledWater))
+      val readyPasta = await(mixPastaAndSauce(cookedPasta, sauce))
+      readyPasta
+    }
+    spaghetti
+  }
 }
