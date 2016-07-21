@@ -1,8 +1,9 @@
 package section7
 
-import scala.concurrent.Future
+import scala.concurrent.{Future, Promise}
 import scala.util.Random
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.control.NonFatal
 
 object Section7 {
   type Pasta = String
@@ -18,12 +19,17 @@ object Section7 {
     water.copy(temperature = 90)
   }
 
-  def cookPasta(pasta: Pasta, water: Water): Future[BoiledPasta] = Future {
-    println(s"preparing to cook pasta $pasta with $water")
-    Thread.sleep(Random.nextInt(2000))
-    if (water.temperature < 70) throw new Exception("the water is not hot enough")
-    println(s"$pasta is ready")
-    s"$pasta ready"
+  def cookPasta(pasta: Pasta, water: Water): Future[BoiledPasta] = {
+    val p = Promise[BoiledPasta]
+    // complete the promise!
+    Future {
+      println(s"preparing to cook pasta $pasta with $water")
+      Thread.sleep(Random.nextInt(2000))
+      if (water.temperature < 100) throw new Exception("the water is not hot enough")
+      println(s"$pasta is ready")
+      s"$pasta ready"
+    }
+    p.future
   }
 
   def prepareSauce(ingredients: String*): Future[Sauce] = Future {
@@ -58,17 +64,6 @@ object Section7 {
       bolognese <- mixPastaAndSauce(psta, sc)
     } yield bolognese
 
-  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
-    val futureSauce = prepareSauce(ingredients: _*)
-    val futureBoiledWater = boilWater(water)
-    for {
-      sc <- futureSauce
-      wtr <- futureBoiledWater
-      psta <- cookPasta(pasta, wtr)
-      bolognese <- mixPastaAndSauce(psta, sc)
-    } yield bolognese
-  }
-
   import scala.async.Async.{async, await}
   def prepareSpaghettiBolognese3(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
     val spaghetti = async {
@@ -80,4 +75,70 @@ object Section7 {
     }
     spaghetti
   }
+
+  // with steps in parallel
+  def prepareSpaghettiBolognese4(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val sauceFuture = prepareSauce(ingredients:_*)
+    val waterFuture = boilWater(water)
+    val pastaFuture = for {
+      water <- waterFuture
+      cookedPasta <- cookPasta(pasta, water)
+    } yield cookedPasta
+    for {
+      pasta <- pastaFuture
+      sauce <- sauceFuture
+      spaghettiBolognese <- mixPastaAndSauce(pasta, sauce)
+    } yield spaghettiBolognese
+  }
+
+  def prepareSpaghettiBolognese5(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val futureSause = prepareSauce(ingredients: _*)
+    val futureCookedPasta: Future[BoiledPasta] = prepareWaterThenCookPasta(pasta, water)
+    for {
+      cookedPasta <- futureCookedPasta
+      sauce <- futureSause
+      spaghettiBolognese <- mixPastaAndSauce(cookedPasta, sauce)
+    } yield spaghettiBolognese
+  }
+
+  def prepareWaterThenCookPasta(pasta: Pasta, water: Water): Future[BoiledPasta] = {
+    val futureCookedPasta = for {
+      boiledWater <- boilWater(water)
+      boiledPasta <- cookPasta(pasta, boiledWater)
+    } yield boiledPasta
+    futureCookedPasta
+  }
+
+  import scala.async.Async.{async, await}
+  def prepareSpaghettiBolognese6(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] = {
+    val sauceFuture = async { await (prepareSauce (ingredients:_*)) }
+    val cookedPastaFuture = async {
+      val boiledWater = await (boilWater (water))
+      await (cookPasta (pasta, boiledWater))
+    }
+    async {
+      val cookedPasta = await (cookedPastaFuture)
+      val sauce = await (sauceFuture)
+      await (mixPastaAndSauce (cookedPasta, sauce))
+    }
+  }
+
+  def prepareSpaghettiBolognese(pasta: Pasta, water: Water, ingredients: String*): Future[SpaghettiBolognese] =
+    async {
+      val preparedSauceTask = prepareSauce(ingredients:_*)
+      val cookedPastaTask = boilWater(water).flatMap(boiledWater => cookPasta(pasta, boiledWater))
+
+      val recoverF: PartialFunction[Throwable, Future[String]] = {
+        case NonFatal(t) =>
+          println(t)
+          Future.successful("pasta is ready nevertheless")
+      }
+      val recovered = try {
+        cookedPastaTask.recoverWith(recoverF)
+      } catch recoverF
+
+      val preparedSauce = await { preparedSauceTask }
+      val cookedPasta = await { recovered }
+      await { mixPastaAndSauce(cookedPasta, preparedSauce) }
+    }
 }
