@@ -1,7 +1,7 @@
 package section7
 
 import scala.concurrent.{Future, Promise}
-import scala.util.Random
+import scala.util.{Random, Try}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.control.NonFatal
 
@@ -12,6 +12,8 @@ object Section7 {
   type SpaghettiBolognese = String
   case class Water(temperature: Int)
 
+  case class NotHotEnoughException(msg: String) extends Exception
+
   def boilWater(water: Water): Future[Water] = Future {
     println("preparing to boil " + water)
     Thread.sleep(Random.nextInt(2000))
@@ -19,15 +21,34 @@ object Section7 {
     water.copy(temperature = 90)
   }
 
-  def cookPasta(pasta: Pasta, water: Water): Future[BoiledPasta] = {
-    val p = Promise[BoiledPasta]
+  def cookPasta1(pasta: Pasta, water: Water): Future[BoiledPasta] = {
+    val p = Promise[BoiledPasta]()
     // complete the promise!
     Future {
       println(s"preparing to cook pasta $pasta with $water")
       Thread.sleep(Random.nextInt(2000))
-      if (water.temperature < 100) throw new Exception("the water is not hot enough")
+      if (water.temperature < 90) {
+        p.failure(new NotHotEnoughException("the water is not hot enough"))
+      }
       println(s"$pasta is ready")
-      s"$pasta ready"
+//      s"$pasta ready"
+      p.success(s"$pasta ready")
+    }
+    p.future
+  }
+
+  def cookPasta(pasta: Pasta, water: Water): Future[BoiledPasta] = {
+    val p = Promise[BoiledPasta]()
+    // complete the promise!
+    Future {
+      val result = Try {
+        println(s"preparing to cook pasta $pasta with $water")
+        Thread.sleep(Random.nextInt(2000))
+        if (water.temperature < 90) throw new NotHotEnoughException("the water is not hot enough")
+        println(s"$pasta is ready")
+        s"$pasta ready"
+      }
+      p.complete(result)
     }
     p.future
   }

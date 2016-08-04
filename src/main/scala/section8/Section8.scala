@@ -36,7 +36,7 @@ object Section8 extends App {
   implicit val timeout = Timeout(10.seconds)
   val isClosed = italianRestaurant ? ItalianRestaurant.ClosingTime
   Await.ready(isClosed, 10.seconds)
-  system.shutdown()
+  system.terminate()
 }
 
 
@@ -94,7 +94,7 @@ class ItalianRestaurant extends Actor {
         context.stop(self)
       } else {
         val requestor = sender
-        context.system.scheduler.scheduleOnce(1.seconds) {
+        context.system.scheduler.scheduleOnce(1.second) {
           self.tell(ClosingTime, requestor)
         }
         // or

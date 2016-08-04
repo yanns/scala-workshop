@@ -14,7 +14,7 @@ class Section7Test extends FeatureSpec with GivenWhenThen with Matchers {
   info("So that all my kids eat a lot")
   info("and quickly go to bed")
 
-  val atMost: Duration = 30.seconds
+  val atMost: Duration = 3.seconds
 
   feature("Cooking spaghetti bolognese") {
     scenario("A featherbrained forget to boil water") {
@@ -25,7 +25,7 @@ class Section7Test extends FeatureSpec with GivenWhenThen with Matchers {
       val spaghetti = cookPasta("spaghetti", water)
 
       Then("the pasta is never ready")
-      intercept [Exception] {
+      intercept [NotHotEnoughException] {
         Await.result(spaghetti, atMost)
       }
     }
