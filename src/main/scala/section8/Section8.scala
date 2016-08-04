@@ -53,22 +53,25 @@ object ItalianRestaurant {
 
 class ItalianRestaurant extends Actor {
   import ItalianRestaurant._
+  import scala.collection.mutable
 
   val totalNumberOfTables = 3
-  var tablesFree = totalNumberOfTables
+  val customers = mutable.Set[ActorRef]()
+  def tablesFree = totalNumberOfTables - customers.size
   var closing = false
+
 
   def receive = {
 
     case CustomerWantsTable if closing => sender ! Customer.RestaurantWillClose
     case CustomerWantsTable if tablesFree > 0 =>
       sender ! Customer.TableFree
-      tablesFree = tablesFree -1
+      customers.add(sender)
     case CustomerWantsTable => sender ! Customer.HaveToWait
 
     case CustomerLeave =>
       println("bye bye " + sender.path.name)
-      tablesFree = tablesFree + 1
+      customers.remove(sender)
 
     case PastaCommand =>
       println("I have to prepare some pasta for " + sender.path.name)
